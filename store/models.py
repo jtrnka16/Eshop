@@ -19,8 +19,7 @@ class Product(models.Model):
     image = models.ImageField(upload_to="images/", blank=True)
 
     class Meta:
-        class Meta:
-            verbose_name_plural = "Products"  # defining the plural model name
+        verbose_name_plural = "Products"  # defining the plural model name
 
     def __str__(self):
         return self.name
