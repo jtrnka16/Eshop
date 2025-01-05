@@ -41,7 +41,7 @@ def register(request):
 
             subject = 'Account verification email'
 
-            message = render_to_string('email-verification.html', {
+            message = render_to_string('account/registration/email-verification.html', {
 
                 'user': user,
                 'domain': current_site.domain,
@@ -57,7 +57,7 @@ def register(request):
 
     context = {'form': form}
 
-    return render(request,'register.html', context=context)
+    return render(request, 'account/registration/register.html', context=context)
 
 def email_verification(request, uidb64, token):
 
@@ -82,17 +82,17 @@ def email_verification(request, uidb64, token):
 
 def email_verification_sent(request):
 
-    return render(request, 'email-verification-sent.html')
+    return render(request, 'account/registration/email-verification-sent.html')
 
 
 def email_verification_success(request):
 
-    return render(request, 'email-verification-success.html')
+    return render(request, 'account/registration/email-verification-success.html')
 
 
 def email_verification_failed(request):
 
-    return render(request, 'email-verification-failed.html')
+    return render(request, 'account/registration/email-verification-failed.html')
 
 def my_login(request):
 
@@ -117,7 +117,7 @@ def my_login(request):
 
     context = {'form': form}
 
-    return render(request, 'my-login.html', context=context)
+    return render(request, 'account/my-login.html', context=context)
 
 # Logout
 
@@ -146,7 +146,7 @@ def user_logout(request):
 @login_required(login_url='my-login')
 def dashboard(request):
 
-    return render(request, 'dashboard.html')
+    return render(request, 'account/dashboard.html')
 
 
 @login_required(login_url='my-login')
@@ -167,7 +167,7 @@ def profile_management(request):
 
     context = {'user_form': user_form}
 
-    return render(request, 'profile-management.html', context=context)
+    return render(request, 'account/profile-management.html', context=context)
 
 @login_required(login_url='my-login')
 def delete_account(request):
@@ -182,7 +182,7 @@ def delete_account(request):
         return redirect('store')
 
 
-    return render(request, 'delete-account.html')
+    return render(request, 'account/delete-account.html')
 
 # Shipping View
 
@@ -223,7 +223,7 @@ def manage_shipping(request):
 
     context = {'form': form}
 
-    return render(request, 'manage_shipping.html', context=context)
+    return render(request, 'account/manage_shipping.html', context=context)
 
 
 

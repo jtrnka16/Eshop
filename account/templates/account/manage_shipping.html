@@ -1,4 +1,4 @@
-{% include "./base.html" %}
+{% include "store/base.html" %}
 
 {% load static %}
 
@@ -24,18 +24,19 @@
     
         <div class="container bg-white shadow md p-5 form-layout">
             
-            <h3> Create your account </h3>
-            
-            <h5> Purchase your items </h5>
-            
+            <h3> Manage shipping </h3>
+            <p>Please fill in your shipping address.</p>
+                        
             <hr>
             <br>
             
-            <div method="POST" autocomplete="off">
+                       
+            
+            <form method="POST" autocomplete="off">
                 
                 {% csrf_token %}
                 
-                {{ form.username|as_crispy_field }}
+                {{ form.full_name|as_crispy_field }}
                 
                 <br><br>
                 
@@ -44,27 +45,31 @@
                 
                 <br><br>
                 
-                
-                {{ form.password1|as_crispy_field }}
-                
-                <br>
-                
-                
-                {{ form.password2|as_crispy_field }}
+                {{ form.address|as_crispy_field }}
                 
                 <br><br>
                 
-                               
-                <br><br>
-                <button type="submit" class="btn btn-primary navbar-btn text-white w-100 p-2"> &nbsp; Create account</button>
+                
+                {{ form.address2|as_crispy_field }}
                 
                 <br><br>
                 
-                <div class="text-center">
+                {{ form.city|as_crispy_field }}
                 
-                    <a href="{% url 'my-login' %}"> Already have an account? </a>
+                <br><br>
                 
-                </div>
+                
+                {{ form.state|as_crispy_field }}
+                
+                <br><br>
+                
+                {{ form.zipcode|as_crispy_field }}
+                
+                 
+                <br><br>
+                <button type="submit" class="btn btn-primary navbar-btn text-white w-100 p-2"> <i class="fa fa-chevron-circle-right" aria-hidden="true"></i> &nbsp; Update shipping adress</button>
+              
+            </form>
             
             </form>
             

@@ -27,19 +27,19 @@ urlpatterns = [
 
     # Submit email form
 
-    path('reset_password', auth_views.PasswordResetView.as_view(template_name="password-reset.html"), name='reset_password'),
+    path('reset_password', auth_views.PasswordResetView.as_view(template_name="account/password/password-reset.html"), name='reset_password'),
 
     # Password reset success message was sent to email
 
-    path('reset_password_sent', auth_views.PasswordResetDoneView.as_view(template_name="password-reset-sent.html"), name='password_reset_done'),
+    path('reset_password_sent', auth_views.PasswordResetDoneView.as_view(template_name="account/password/password-reset-sent.html"), name='password_reset_done'),
 
     # Password reset link
 
-    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name="password-reset-form.html"), name='password_reset_confirm'),
+    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name="account/password/password-reset-form.html"), name='password_reset_confirm'),
 
     # Success massage stating that our password was reset
 
-    path('reset_password_complete', auth_views.PasswordResetCompleteView.as_view(template_name="password-reset-complete.html"), name='password_reset_complete'),
+    path('reset_password_complete', auth_views.PasswordResetCompleteView.as_view(template_name="account/password/password-reset-complete.html"), name='password_reset_complete'),
 
     # Manage shipping url
 

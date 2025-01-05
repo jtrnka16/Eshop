@@ -20,16 +20,16 @@ def checkout(request):
 
             context = {'shipping' : shipping_address}
 
-            return render(request, 'checkout.html', context=context)
+            return render(request, 'payment/checkout.html', context=context)
 
         except:
 
             # Authenticated users with NO shipping information
 
-            return render(request, 'checkout.html')
+            return render(request, 'payment/checkout.html')
 
 
-    return render(request, 'checkout.html')
+    return render(request, 'payment/checkout.html')
 
 def payment_success(request):
 
@@ -41,11 +41,11 @@ def payment_success(request):
 
             del request.session[key]
 
-    return render(request, 'payment_success.html')
+    return render(request, 'payment/payment_success.html')
 
 
 def payment_failed(request):
-    return render(request, 'payment_failed.html')
+    return render(request, 'payment/payment_failed.html')
 
 def complete_order(request):
 
