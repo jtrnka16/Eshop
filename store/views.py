@@ -16,8 +16,6 @@ def categories(request):
 
     return {'all_categories':all_categories}
 
-from django.core.paginator import Paginator
-
 def list_category(request, category_slug=None):
     category = get_object_or_404(Category, slug=category_slug)
     products = Product.objects.filter(category=category).order_by('name')  # Default order
