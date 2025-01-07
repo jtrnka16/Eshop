@@ -7,11 +7,9 @@ django-crispy-forms==1.14.0
 django-mathfilters==1.0.0
 django-storages==1.13.1
 django-utils-six==2.0
-gunicorn==23.0.0
 jmespath==1.0.1
 packaging==21.3
 Pillow==10.1.0
-psycopg2-binary==2.9.10
 pyparsing==3.0.9
 python-dateutil==2.8.2
 s3transfer==0.6.0
