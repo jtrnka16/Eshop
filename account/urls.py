@@ -45,6 +45,10 @@ urlpatterns = [
 
     path('manage-shipping', views.manage_shipping, name='manage-shipping'),
 
+    # Track orders
+
+    path('track-orders', views.track_orders, name='track-orders'),
+
 
 
 
