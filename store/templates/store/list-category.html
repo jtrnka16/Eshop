@@ -11,6 +11,20 @@
       <div class="pb-3 h5"> {{ category.name | capfirst }} </div>
       <hr>
 
+      <!-- Subcategories -->
+      {% if category.subcategories.all %}
+      <div class="mb-4">
+        <h6>Subcategories:</h6>
+        <ul class="list-inline">
+          {% for subcategory in category.subcategories.all %}
+          <li class="list-inline-item">
+            <a href="{{ subcategory.get_absolute_url }}" class="btn btn-outline-secondary">{{ subcategory.name }}</a>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+
       <!-- Search and Sorting -->
       <div class="d-flex justify-content-between align-items-center mb-4">
         <input id="search" type="text" class="form-control w-50" placeholder="Search products...">
@@ -120,3 +134,4 @@
   });
 </script>
 {% endblock %}
+

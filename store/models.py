@@ -5,12 +5,24 @@ from django.urls import reverse
 class Category(models.Model):
     name = models.CharField(max_length=255, db_index=True)
     slug = models.SlugField(max_length=255, unique=True)
+    parent = models.ForeignKey(
+        'self',  # Odkaz na stejný model
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+        related_name='subcategories'  # Umožní snadný přístup k podkategoriím
+    )
 
     class Meta:
-        verbose_name_plural = "Categories" #defining the plural model name
+        verbose_name_plural = "Categories"  # Definuje množné číslo pro model
 
     def __str__(self):
-        return self.name
+        full_path = [self.name]
+        k = self.parent
+        while k is not None:
+            full_path.append(k.name)
+            k = k.parent
+        return ' > '.join(full_path)
 
     def get_absolute_url(self):
         return reverse("list-category", args=[self.slug])

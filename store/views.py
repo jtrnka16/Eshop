@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.shortcuts import render
@@ -5,16 +6,29 @@ from .models import Category, Product
 from django.shortcuts import get_object_or_404
 
 def store(request):
+    query = request.GET.get('q')
     all_products = Product.objects.all()
+    main_categories = Category.objects.filter(parent__isnull=True).prefetch_related('subcategories')
 
-    context = {'my_products': all_products}
+    # Vyhledávání produktů
+    if query:
+        all_products = all_products.filter(
+            Q(name__icontains=query) |
+            Q(description__icontains=query)
+        )
 
-    return render(request, 'store/store.html', context=context)
+    context = {
+        'my_products': all_products,
+        'main_categories': main_categories,
+        'query': query  # Přidáme dotaz do kontextu pro případné zobrazení na stránce
+    }
+
+    return render(request, 'store/store.html', context)
 
 def categories(request):
-    all_categories = Category.objects.all()
+    main_categories = Category.objects.filter(parent__isnull=True).prefetch_related('subcategories')
 
-    return {'all_categories':all_categories}
+    return {'main_categories': main_categories}
 
 def list_category(request, category_slug=None):
     category = get_object_or_404(Category, slug=category_slug)
