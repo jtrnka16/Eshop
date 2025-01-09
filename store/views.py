@@ -31,8 +31,13 @@ def categories(request):
     return {'main_categories': main_categories}
 
 def list_category(request, category_slug=None):
+
     category = get_object_or_404(Category, slug=category_slug)
-    products = Product.objects.filter(category=category).order_by('name')  # Default order
+
+    subcategories = category.subcategories.all()
+    all_categories = [category] + list(subcategories)
+
+    products = Product.objects.filter(category__in=all_categories).order_by('name')
 
     # Handle Ajax requests
     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
@@ -40,7 +45,7 @@ def list_category(request, category_slug=None):
         sort_by = request.GET.get('sort_by', 'name')
         if query:
             products = products.filter(name__icontains=query)
-        products = products.order_by(sort_by)  # Apply sorting for Ajax requests
+        products = products.order_by(sort_by)
 
         paginator = Paginator(products, 10)
         page_number = request.GET.get('page', 1)
@@ -65,15 +70,15 @@ def list_category(request, category_slug=None):
         })
 
     # Pagination for initial render
-    paginator = Paginator(products, 10)  # Pagination after ordering
+    paginator = Paginator(products, 10)
     page_number = request.GET.get('page', 1)
     page_obj = paginator.get_page(page_number)
 
     return render(request, 'store/list-category.html', {
         'category': category,
-        'products': page_obj
+        'products': page_obj,
+        'subcategories': subcategories,  # Přidá subkategorie pro zobrazení v šabloně
     })
-
 
 def product_info(request, product_slug):
     product = get_object_or_404(Product, slug=product_slug)
