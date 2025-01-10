@@ -8,15 +8,15 @@ class Category(models.Model):
     name = models.CharField(max_length=255, db_index=True)
     slug = models.SlugField(max_length=255, unique=True)
     parent = models.ForeignKey(
-        'self',  # Odkaz na stejný model
+        'self',
         on_delete=models.CASCADE,
         blank=True,
         null=True,
-        related_name='subcategories'  # Umožní snadný přístup k podkategoriím
+        related_name='subcategories'
     )
 
     class Meta:
-        verbose_name_plural = "Categories"  # Definuje množné číslo pro model
+        verbose_name_plural = "Categories"   # defining the plural model name
 
     def __str__(self):
         full_path = [self.name]
@@ -39,7 +39,7 @@ class Product(models.Model):
     image = models.ImageField(upload_to="images/", blank=True)
 
     class Meta:
-        verbose_name_plural = "Products"  # defining the plural model name
+        verbose_name_plural = "Products"
 
     def __str__(self):
         return self.name
