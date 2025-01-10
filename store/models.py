@@ -1,5 +1,7 @@
 from django.db import models
 from django.urls import reverse
+from PIL import Image
+
 
 
 class Category(models.Model):
@@ -30,7 +32,7 @@ class Category(models.Model):
 class Product(models.Model):
     category = models.ForeignKey(Category, related_name='product', on_delete=models.CASCADE, null=True)
     name = models.CharField(max_length=255)
-    description = models.TextField(blank=True) #for optional information
+    description = models.TextField(blank=True)  # for optional information
     slug = models.SlugField(max_length=255)
     price = models.FloatField()
     stock = models.IntegerField()
@@ -44,4 +46,18 @@ class Product(models.Model):
 
     def get_absolute_url(self):
         return reverse("product-info", args=[self.slug])
+
+    def save(self, *args, **kwargs):
+
+        super().save(*args, **kwargs)
+
+        if self.image:
+            img = Image.open(self.image.path)
+
+            # Maxim size of image
+            output_size = (300, 300)
+            img.thumbnail(output_size)
+
+            # Saving image
+            img.save(self.image.path)
 

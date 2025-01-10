@@ -41,11 +41,11 @@
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-5 g-3" id="product-list">
         {% for product in products.object_list %}
         <div class="col">
-          <div class="card shadow-sm">
+          <div class="product-card">
             {% if product.image %}
-            <img class="img-fluid" alt="Responsive image" src="{{ product.image.url }}">
+            <img src="{{ product.image.url }}" alt="{{ product.name }}">
             {% else %}
-            <img class="img-fluid" alt="No image available" src="{% static 'images/no-image.png' %}">
+            <img src="{% static 'images/no-image.png' %}" alt="No image available">
             {% endif %}
 
             <div class="card-body">
@@ -90,8 +90,8 @@
         data.products.forEach(product => {
           productList.append(`
             <div class="col">
-              <div class="card shadow-sm">
-                ${product.image ? `<img class="img-fluid" alt="Product image" src="${product.image}">` : `<img class="img-fluid" alt="No image available" src="{% static 'images/no-image.png' %}">`}
+              <div class="product-card">
+                ${product.image ? `<img src="${product.image}" alt="Product image">` : `<img src="{% static 'images/no-image.png' %}" alt="No image available">`}
                 <div class="card-body">
                   <p class="card-text">
                     <a class="text-info text-decoration-none" href="/product/${product.slug}">${product.name}</a>
@@ -129,6 +129,7 @@
   });
 </script>
 {% endblock %}
+
 
 
 
