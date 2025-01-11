@@ -32,6 +32,11 @@ class ShippingAddress(models.Model):
         return 'Shipping Address - ' + str(self.id)
 
 class Order(models.Model):
+    STATUS_CHOICES = [
+        ('received', 'Received'),  # Přijata
+        ('shipped', 'Shipped'),  # Odeslána
+        ('completed', 'Completed')  # Vyřízena
+    ]
 
     full_name = models.CharField(max_length=300)
 
@@ -42,6 +47,12 @@ class Order(models.Model):
     amount_paid = models.DecimalField(max_digits=8, decimal_places=2)
 
     date_ordered = models.DateTimeField(auto_now_add=True)
+
+    status = models.CharField(
+        max_length=10,
+        choices=STATUS_CHOICES,
+        default='received'  # Default value for order
+    )
 
     # FK
 
@@ -70,4 +81,4 @@ class OrderItem(models.Model):
 
     def __str__(self):
 
-        return 'Order - #' + str(self.id)
+        return 'OrderItem - #' + str(self.id)

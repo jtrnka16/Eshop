@@ -11,4 +11,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
+    list_display = ('name', 'category')  # Adding column for diplaying the category
     prepopulated_fields = {"slug": ("name",)}
+    list_filter = ('category',)  # Filtering by  category
+    search_fields = ('name',)  # Filtering by name
