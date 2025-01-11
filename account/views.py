@@ -1,6 +1,9 @@
 from django.shortcuts import redirect, render
 from .forms import CreateUserForm, LoginForm, UpdateUserForm
 
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
+
 from payment.forms import ShippingForm
 from payment.models import ShippingAddress
 
@@ -155,19 +158,27 @@ def dashboard(request):
 def profile_management(request):
 
     user_form = UpdateUserForm(instance=request.user)
+    password_form = PasswordChangeForm(user=request.user)  # Password change
 
     if request.method == 'POST':
-
         user_form = UpdateUserForm(request.POST, instance=request.user)
+        password_form = PasswordChangeForm(user=request.user, data=request.POST)  # Processing data from form
 
         if user_form.is_valid():
             user_form.save()
-
             messages.info(request, 'Account updated successfully.')
-
             return redirect('dashboard')
 
-    context = {'user_form': user_form}
+        # Processing the password change form
+        if password_form.is_valid():
+            password_form.save()
+            update_session_auth_hash(request, password_form.user)  # Keeping logged relation
+            messages.success(request, 'Password updated successfully.')
+            return redirect('dashboard')
+        else:
+            messages.error(request, 'Please correct the error below.')
+
+    context = {'user_form': user_form, 'password_form': password_form}  # Adding password_form to context
 
     return render(request, 'account/profile-management.html', context=context)
 

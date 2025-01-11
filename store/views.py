@@ -10,7 +10,7 @@ def store(request):
     all_products = Product.objects.all()
     main_categories = Category.objects.filter(parent__isnull=True).prefetch_related('subcategories')
 
-    # Vyhledávání produktů
+    # Product search
     if query:
         all_products = all_products.filter(
             Q(name__icontains=query) |
@@ -20,7 +20,7 @@ def store(request):
     context = {
         'my_products': all_products,
         'main_categories': main_categories,
-        'query': query  # Přidáme dotaz do kontextu pro případné zobrazení na stránce
+        'query': query  # Add the query to the context for possible display on the page
     }
 
     return render(request, 'store/store.html', context)
@@ -77,12 +77,13 @@ def list_category(request, category_slug=None):
     return render(request, 'store/list-category.html', {
         'category': category,
         'products': page_obj,
-        'subcategories': subcategories,  # Přidá subkategorie pro zobrazení v šabloně
+        'subcategories': subcategories,  # Subcategory to the template
     })
 
 def product_info(request, product_slug):
     product = get_object_or_404(Product, slug=product_slug)
-    context = {'product': product}
+    in_stock = product.is_in_stock()  # If the product is in stock
+    context = {'product': product, 'in_stock': in_stock}
 
     return render(request, 'store/product-info.html', context=context)
 

@@ -48,7 +48,6 @@ class Product(models.Model):
         return reverse("product-info", args=[self.slug])
 
     def save(self, *args, **kwargs):
-
         super().save(*args, **kwargs)
 
         if self.image:
@@ -60,4 +59,10 @@ class Product(models.Model):
 
             # Saving image
             img.save(self.image.path)
+
+    def is_in_stock(self):
+        """
+        Returns True if the product stock is greater than 0, otherwise False.
+        """
+        return self.stock > 0
 
