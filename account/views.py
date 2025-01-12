@@ -82,7 +82,7 @@ def email_verification(request, uidb64, token):
 
     else:
 
-        return redirect('email-verification-failure')
+        return redirect('email-verification-failed')
 
 
 def email_verification_sent(request):

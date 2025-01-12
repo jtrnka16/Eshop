@@ -1,6 +1,6 @@
 from django.db import models
 from django.urls import reverse
-from PIL import Image
+from PIL import Image, UnidentifiedImageError
 
 
 
@@ -24,7 +24,7 @@ class Category(models.Model):
         while k is not None:
             full_path.append(k.name)
             k = k.parent
-        return ' > '.join(full_path)
+        return ' > '.join(reversed(full_path))
 
     def get_absolute_url(self):
         return reverse("list-category", args=[self.slug])
@@ -51,14 +51,19 @@ class Product(models.Model):
         super().save(*args, **kwargs)
 
         if self.image:
-            img = Image.open(self.image.path)
+            try:
+                img = Image.open(self.image.path)
 
-            # Maxim size of image
-            output_size = (300, 300)
-            img.thumbnail(output_size)
+                # Maxim size of image
+                output_size = (300, 300)
+                img.thumbnail(output_size)
 
-            # Saving image
-            img.save(self.image.path)
+                # Saving image
+                img.save(self.image.path)
+
+            except UnidentifiedImageError:
+                # Ignore error when working with mocked image
+                pass
 
     def is_in_stock(self):
         """
