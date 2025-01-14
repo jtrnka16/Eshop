@@ -3,12 +3,15 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 from store.models import Product
 from payment.models import ShippingAddress, Order, OrderItem
-from cart.cart import Cart
 
 
 class TestPaymentViews(TestCase):
 
     def setUp(self):
+        """
+        Sets up test data for payment view tests.
+        Creates a user, product, shipping address, and mock session data for the cart.
+        """
         self.client = Client()
 
         # Create a user
@@ -40,12 +43,18 @@ class TestPaymentViews(TestCase):
         session.save()
 
     def test_checkout_authenticated_with_shipping(self):
+        """
+        Test the checkout view for an authenticated user with a shipping address.
+        """
         self.client.login(username='testuser', password='testpassword')
         response = self.client.get(reverse('checkout'))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.shipping_address.full_name)
 
     def test_checkout_authenticated_without_shipping(self):
+        """
+        Test the checkout view for an authenticated user without a shipping address.
+        """
         self.shipping_address.delete()  # Remove shipping address
         self.client.login(username='testuser', password='testpassword')
         response = self.client.get(reverse('checkout'))
@@ -53,15 +62,24 @@ class TestPaymentViews(TestCase):
         self.assertNotContains(response, 'Test User')
 
     def test_checkout_guest(self):
+        """
+        Test the checkout view for a guest user.
+        """
         response = self.client.get(reverse('checkout'))
         self.assertEqual(response.status_code, 200)
 
     def test_payment_failed(self):
+        """
+        Test the payment failed view.
+        """
         response = self.client.get(reverse('payment_failed'))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'payment/payment_failed.html')
 
     def test_complete_order_authenticated_user(self):
+        """
+        Test the complete order view for an authenticated user.
+        """
         self.client.login(username='testuser', password='testpassword')
         data = {
             'action': 'post',
@@ -79,6 +97,9 @@ class TestPaymentViews(TestCase):
         self.assertTrue(OrderItem.objects.filter(order__user=self.user).exists())
 
     def test_complete_order_guest_user(self):
+        """
+        Test the complete order view for a guest user.
+        """
         data = {
             'action': 'post',
             'name': 'Guest User',

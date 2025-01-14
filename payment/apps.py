@@ -6,4 +6,7 @@ class PaymentConfig(AppConfig):
     name = 'payment'
 
     def ready(self):
-        import payment.signals  # Retrieve signals when the application starts
+        """
+        Imports the signals for the payment app when the application starts.
+        """
+        import payment.signals

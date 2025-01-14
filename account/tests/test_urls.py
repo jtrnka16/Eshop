@@ -3,6 +3,7 @@ from django.urls import reverse, resolve
 from account import views
 from django.contrib.auth import views as auth_views
 
+
 class TestUrls(SimpleTestCase):
 
     def test_register_url(self):
