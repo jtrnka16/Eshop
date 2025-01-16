@@ -5,12 +5,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 
 
 class CartViewTest(TestCase):
-
     def setUp(self):
-        """
-        Sets up test data for cart view tests.
-        Creates a product with a test image.
-        """
         self.client = Client()
         self.product = Product.objects.create(
             name="Test Product",
@@ -25,18 +20,14 @@ class CartViewTest(TestCase):
         )
 
     def test_cart_summary_view(self):
-        """
-        Test displaying the cart overview page.
-        """
+        """Test displaying the cart overview"""
         url = reverse('cart-summary')
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'cart/cart-summary.html')
 
     def test_cart_add_view(self):
-        """
-        Test adding a product to the cart.
-        """
+        """Test adding a product to the cart"""
         url = reverse('cart-add')
         response = self.client.post(url, {
             'action': 'post',
@@ -47,17 +38,14 @@ class CartViewTest(TestCase):
         self.assertJSONEqual(response.content, {'qty': 2})
 
     def test_cart_delete_view(self):
-        """
-        Test removing a product from the cart.
-        """
-        # Add the product to the cart first
+        """Test removing a product from the cart"""
+        # First we add the product to the cart
         self.client.post(reverse('cart-add'), {
             'action': 'post',
             'product_id': self.product.id,
             'product_quantity': 2,
         })
-
-        # Then remove the product from the cart
+        # Then we delete the product
         url = reverse('cart-delete')
         response = self.client.post(url, {
             'action': 'post',
@@ -68,17 +56,14 @@ class CartViewTest(TestCase):
         self.assertIn('total', response.json())
 
     def test_cart_update_view(self):
-        """
-        Test updating the quantity of a product in the cart.
-        """
-        # Add the product to the cart first
+        """Test updating the quantity of the product in the cart"""
+        # First we add the product to the cart
         self.client.post(reverse('cart-add'), {
             'action': 'post',
             'product_id': self.product.id,
             'product_quantity': 2,
         })
-
-        # Update the product quantity
+        # We update the quantity
         url = reverse('cart-update')
         response = self.client.post(url, {
             'action': 'post',
@@ -88,7 +73,6 @@ class CartViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn('qty', response.json())
         self.assertIn('total', response.json())
-
 
 
 

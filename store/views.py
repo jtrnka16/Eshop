@@ -1,16 +1,16 @@
-from django.core.paginator import Paginator
 from django.db.models import Q
+from django.core.paginator import Paginator
 from django.http import JsonResponse
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
 from .models import Category, Product
-
+from django.shortcuts import get_object_or_404
 
 def store(request):
     query = request.GET.get('q')
     all_products = Product.objects.all()
     main_categories = Category.objects.filter(parent__isnull=True).prefetch_related('subcategories')
 
-    # Filter products based on search query
+    # Product search
     if query:
         all_products = all_products.filter(
             Q(name__icontains=query) |
@@ -25,34 +25,24 @@ def store(request):
 
     return render(request, 'store/store.html', context)
 
-
 def categories(request):
     main_categories = Category.objects.filter(parent__isnull=True).prefetch_related('subcategories')
 
     return {'main_categories': main_categories}
 
-
 def list_category(request, category_slug=None):
-    """
-    Display products within a specific category and handle optional AJAX filtering.
 
-    Args:
-        request: The HTTP request object.
-        category_slug: The slug of the category to display.
-
-    Returns:
-        Rendered HTML page or JSON response for AJAX requests.
-    """
     category = get_object_or_404(Category, slug=category_slug)
+
     subcategories = category.subcategories.all()
     all_categories = [category] + list(subcategories)
+
     products = Product.objects.filter(category__in=all_categories).order_by('name')
 
     # Handle Ajax requests
     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
         query = request.GET.get('q', '')
         sort_by = request.GET.get('sort_by', 'name')
-
         if query:
             products = products.filter(name__icontains=query)
         products = products.order_by(sort_by)
@@ -90,16 +80,10 @@ def list_category(request, category_slug=None):
         'subcategories': subcategories,  # Subcategory to the template
     })
 
-
 def product_info(request, product_slug):
     product = get_object_or_404(Product, slug=product_slug)
-    in_stock = product.is_in_stock()  # Check if the product is in stock
-
-    context = {
-        'product': product,
-        'in_stock': in_stock
-    }
+    in_stock = product.is_in_stock()  # If the product is in stock
+    context = {'product': product, 'in_stock': in_stock}
 
     return render(request, 'store/product-info.html', context=context)
-
 
