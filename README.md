@@ -9,7 +9,7 @@ Jerky Inferno is a e-commerce platform built with Django. It supports features s
 - **Shopping Cart**: Add products to the cart, update quantities, and review items.
 - **Payment Integration**: Process payments securely.
 - **Media Support**: Handle product images and other uploads.
-- **Admin Panel: A powerful admin interface for managing the site, products, and users.
+- **Admin Panel**: A powerful admin interface for managing the site, products, and users.
 
 ## Technologies Used
 - **Python**: Core programming language.
