@@ -1,10 +1,13 @@
 from django import forms
-from .models import ShippingAddress
 
+from . models import ShippingAddress
 
 class ShippingForm(forms.ModelForm):
 
     class Meta:
+
         model = ShippingAddress
+
         fields = ['full_name', 'email', 'address', 'address2', 'city', 'state', 'zipcode']
-        exclude = ['user']
+
+        exclude = ['user',]

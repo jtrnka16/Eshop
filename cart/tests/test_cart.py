@@ -3,14 +3,9 @@ from django.contrib.sessions.middleware import SessionMiddleware
 from cart.cart import Cart
 from store.models import Product
 
-
 class CartTest(TestCase):
-
     def setUp(self):
-        """
-        Sets up test data and initializes a Cart instance.
-        Creates a request with a session and two test products.
-        """
+        # Create a RequestFactory instance
         self.factory = RequestFactory()
         self.request = self.factory.get('/')
 
@@ -27,57 +22,43 @@ class CartTest(TestCase):
         self.cart = Cart(self.request)
 
     def test_cart_initialization(self):
-        """
-        Test cart initialization for a new user.
-        """
+        # Test cart initialization for a new user
         self.assertEqual(len(self.cart), 0)  # Cart should be empty
         self.assertEqual(self.cart.cart, {})  # Cart data should be an empty dictionary
 
     def test_add_new_product(self):
-        """
-        Test adding a new product to the cart.
-        """
+        # Test adding a new product to the cart
         self.cart.add(self.product1, 2)
         self.assertEqual(len(self.cart), 2)  # Quantity should be 2
         self.assertIn(str(self.product1.id), self.cart.cart)  # Product should exist in the cart
 
     def test_update_existing_product_quantity(self):
-        """
-        Test updating the quantity of an existing product in the cart.
-        """
+        # Test updating the quantity of an existing product
         self.cart.add(self.product1, 2)
         self.cart.add(self.product1, 5)  # Update quantity to 5
         self.assertEqual(self.cart.cart[str(self.product1.id)]['qty'], 5)
 
     def test_delete_product(self):
-        """
-        Test deleting a product from the cart.
-        """
+        # Test deleting a product from the cart
         self.cart.add(self.product1, 2)
         self.cart.delete(self.product1.id)
         self.assertEqual(len(self.cart), 0)  # Cart should be empty
         self.assertNotIn(str(self.product1.id), self.cart.cart)  # Product should no longer exist in the cart
 
     def test_update_product_quantity(self):
-        """
-        Test updating the quantity of a product in the cart.
-        """
+        # Test updating the quantity of a product in the cart
         self.cart.add(self.product1, 2)
         self.cart.update(self.product1.id, 10)  # Update quantity to 10
         self.assertEqual(self.cart.cart[str(self.product1.id)]['qty'], 10)
 
     def test_cart_length(self):
-        """
-        Test the total quantity of items in the cart.
-        """
+        # Test the total quantity of items in the cart
         self.cart.add(self.product1, 2)
         self.cart.add(self.product2, 3)
         self.assertEqual(len(self.cart), 5)  # Total quantity should be 5 (2 + 3)
 
     def test_cart_iteration(self):
-        """
-        Test iterating over the items in the cart.
-        """
+        # Test iterating over the items in the cart
         self.cart.add(self.product1, 2)
         self.cart.add(self.product2, 3)
 
@@ -90,12 +71,9 @@ class CartTest(TestCase):
         self.assertEqual(item1['total'], self.product1.price * 2)  # Total price for product1
 
     def test_cart_total(self):
-        """
-        Test the total price of items in the cart.
-        """
+        # Test the total price of items in the cart
         self.cart.add(self.product1, 2)
         self.cart.add(self.product2, 3)
         total = self.cart.get_total()
         expected_total = (self.product1.price * 2) + (self.product2.price * 3)
         self.assertEqual(total, expected_total)  # Total should match the expected sum
-
