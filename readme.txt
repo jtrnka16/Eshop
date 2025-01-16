@@ -9,7 +9,6 @@ Jerky Inferno is a e-commerce platform built with Django. It supports features s
 - **Shopping Cart**: Add products to the cart, update quantities, and review items.
 - **Payment Integration**: Process payments securely.
 - **Media Support**: Handle product images and other uploads.
-- **Admin Panel: A powerful admin interface for managing the site, products, and users.
 
 ## Technologies Used
 - **Python**: Core programming language.
@@ -66,6 +65,25 @@ Jerky Inferno is a e-commerce platform built with Django. It supports features s
 - `media/`: Directory for uploaded files.
 - `requirements.txt`: Dependencies for the project.
 
+## Deployment
+
+1. **Set Up Environment Variables**:
+   - `DEBUG=False`
+   - `ALLOWED_HOSTS=<your_domain>`
+
+2. **Collect Static Files**:
+   ```bash
+   python manage.py collectstatic
+   ```
+
+3. **Configure WSGI/ASGI**:
+   Use a production server like Gunicorn or uWSGI.
+
+4. **Set Up a Database**:
+   Configure a production database (e.g., PostgreSQL) in `settings.py`.
+
+5. **Deploy on a Server**:
+   Use platforms like Heroku, AWS, or DigitalOcean.
 
 ## Testing
 Run the test suite using:
@@ -75,6 +93,6 @@ python manage.py test
 
 ## Contact
 For any questions or feedback, reach out to:
-- **Email**: [jakubtrnka16@gmail.com](mailto:jakubtrnka16@gmail.com)
-- **GitHub**: [https://github.com/jtrnka16](https://github.com/jtrnka16)
+- **Email**: [your-email@example.com](mailto:your-email@example.com)
+- **GitHub**: [Your GitHub Profile](https://github.com/your-profile)
 
