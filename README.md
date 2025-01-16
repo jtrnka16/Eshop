@@ -66,6 +66,9 @@ Jerky Inferno is a e-commerce platform built with Django. It supports features s
 - `media/`: Directory for uploaded files.
 - `requirements.txt`: Dependencies for the project.
 
+## Entity Relationship Diagram
+![ERD Diagram](./ERD.png)
+
 
 ## Testing
 Run the test suite using:
