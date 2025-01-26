@@ -43,6 +43,19 @@
             </div>
             {% endfor %}
         </div>
+
+        <!-- Pagination -->
+        <div class="d-flex justify-content-center mt-4" id="pagination">
+            {% if my_products.has_previous %}
+            <button class="btn btn-outline-primary me-2" onclick="window.location.href='?page={{ my_products.previous_page_number }}'">Previous</button>
+            {% endif %}
+            {% if my_products.has_next %}
+            <button class="btn btn-outline-primary" onclick="window.location.href='?page={{ my_products.next_page_number }}'">Next</button>
+            {% endif %}
+        </div>
+        <!-- End of Pagination -->
+
     </div>
 </div>
 {% endblock %}
+

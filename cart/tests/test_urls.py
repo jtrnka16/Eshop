@@ -4,6 +4,7 @@ from cart.views import cart_summary, cart_add, cart_delete, cart_update
 
 
 class CartURLTest(SimpleTestCase):
+
     def test_cart_summary_url(self):
         url = reverse('cart-summary')
         self.assertEqual(resolve(url).func, cart_summary)
