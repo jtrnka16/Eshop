@@ -7,7 +7,7 @@ from .models import Category, Product
 
 def store(request):
     query = request.GET.get('q')
-    all_products = Product.objects.all()
+    all_products = Product.objects.all().order_by('name')
     main_categories = Category.objects.filter(parent__isnull=True).prefetch_related('subcategories')
 
     # Filter products based on search query
@@ -17,8 +17,12 @@ def store(request):
             Q(description__icontains=query)
         )
 
+    paginator = Paginator(all_products, 10)
+    page_number = request.GET.get('page', 1)
+    page_obj = paginator.get_page(page_number)
+
     context = {
-        'my_products': all_products,
+        'my_products': page_obj,
         'main_categories': main_categories,
         'query': query  # Add the query to the context for possible display on the page
     }
